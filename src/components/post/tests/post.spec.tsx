@@ -1,0 +1,3 @@
+describe("CardRecipe", ()=>{
+    it("", ()=>{})
+})

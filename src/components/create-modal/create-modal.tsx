@@ -1,12 +1,13 @@
 import { useEffect} from 'react';
 import { useState } from "react"
-import { useFoodDataMutate } from "../../hooks/useFoodDataMutate";
-import { FoodData } from "../../interface/FoodData";
+//import { useFoodDataMutate } from "../../hooks/useFoodDataMutate";
+import { PostData } from "../../interface/PostData";
 import "./modal.css";
 
 
 
 import "./modal.css";
+import { usePostDataMutate } from '../../hooks/usePostDataMutate';
 
 interface InputProps {
     label: string,
@@ -28,18 +29,18 @@ const Input = ({ label, value, updateValue }: InputProps) => {
 }
 
 export function CreateModal({ closeModal }: ModalProps){
+    const [username, setUsername] = useState("");
     const [title, setTitle] = useState("");
-    const [price, setPrice] = useState(0);
-    const [image, setImage] = useState("");
-    const { mutate, isSuccess, isLoading } = useFoodDataMutate();
+    const [content, setContent] = useState("");
+    const { mutate, isSuccess, isLoading } = usePostDataMutate();
 
     const submit = () => {
-        const foodData: FoodData = {
+        const postData: PostData = {
+            username,
             title, 
-            price,
-            image
+            content
         }
-        mutate(foodData)
+        mutate(postData)
     }
 
     useEffect(() => {
@@ -50,14 +51,15 @@ export function CreateModal({ closeModal }: ModalProps){
     return(
         <div className="modal-overlay">
             <div className="modal-body">
-                <h2>Cadastre um novo item no cardápio</h2>
+                <header>CodeLeap Network</header>
+                <h2>What's on your mind?</h2>
                 <form className="input-container">
+                    <Input label='username' value ={username} updateValue={setUsername}></Input>
                     <Input label="title" value={title} updateValue={setTitle}/>
-                    <Input label="price" value={price} updateValue={setPrice}/>
-                    <Input label="image" value={image} updateValue={setImage}/>
+                    <Input label="content" value={content} updateValue={setContent}/>
                 </form>
                 <button onClick={submit} className="btn-secondary">
-                    {isLoading ? 'postando...' : 'postar'}
+                    {isLoading ? 'Creating...' : 'Create'}
                 </button>
             </div>
         </div>
